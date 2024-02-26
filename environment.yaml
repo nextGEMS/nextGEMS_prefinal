@@ -29,7 +29,7 @@ dependencies:
   - jupyterlab
   - jupytext
   - libnetcdf>=4.9.2
-  - matplotlib
+  - matplotlib<3.8  # because of pyeddytracker
   - nco
   - netcdf4
   - numba<0.56
