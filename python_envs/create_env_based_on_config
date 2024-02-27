@@ -9,7 +9,7 @@ logname="hackathon_env_${git_version}_$(date +%F_%T)_install.log"
 
 prefix=${prefix:-/fastdata/bm1235/python_environments}
 
-if [ ! -f  ${prefix}/miniconda3 ] ; then
+if [ ! -d  ${prefix}/miniconda3 ] ; then
 mkdir -p ${prefix}/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ${prefix}/miniconda3/miniconda.sh
 bash ${prefix}/miniconda3/miniconda.sh -b -u -p ${prefix}/miniconda3
