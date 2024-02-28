@@ -1,0 +1,57 @@
+name: km-hackathon
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.10
+  - aiohttp
+  - cartopy
+  - cdo
+  - cdsapi
+  - cfgrib
+  - cfunits
+  - cmocean
+  - dask
+  - dask-jobqueue
+  - distributed
+  - eccodes>=2.34.0
+  - ecflow
+  - ecmwf-api-client
+  - fastparquet
+  - gcm_filters
+  - hdf5plugin
+  - healpy
+  - intake==0.7.0
+  - intake-esm
+  - intake-xarray
+  - ipykernel
+  - iris
+  - jupyter
+  - jupyterlab
+  - jupytext
+  - libnetcdf>=4.9.2
+  - matplotlib<3.8  # because of pyeddytracker
+  - nco
+  - netcdf4
+  - numba<0.56
+  - numpy
+  - opencv
+  - pandas
+  - polygon3
+  - pyfesom2
+  - python-cdo
+  - python-eccodes
+  - requests
+  - scikit-learn
+  - scipy
+  - seaborn
+  - spectrum
+  - tqdm
+  - xarray
+  - xgcm
+  - zarr
+  - pip
+  - pip:
+    - easygems
+    - git+https://gitlab.dkrz.de/m300602/pyicon.git
+    - gribscan
+    - pyeddytracker
