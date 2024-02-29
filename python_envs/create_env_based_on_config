@@ -23,8 +23,7 @@ echo $command > ${logname}
 echo >> ${logname}
 
 $command >>${logname} 2>&1
-export PATH=${prefix}/${name}:${PATH}
-./install_kernel --kernel_name=${name} >> ${logname} 2>&1 
+cp  install_kernel ${prefix}/${name}/bin/
 
 
 # -freeze-installed, --no-update-deps
