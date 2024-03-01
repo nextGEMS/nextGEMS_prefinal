@@ -44,6 +44,7 @@ dependencies:
   - scikit-learn
   - scipy
   - seaborn
+  - sh
   - spectrum
   - tqdm
   - xarray

@@ -1,0 +1,91 @@
+#!/usr/bin/env python
+
+import subprocess as sp
+import logging
+import os
+import pathlib
+import json
+import argparse
+
+
+def install_kernel(kernel_name):
+    install_command = [
+        "python",
+        "-m",
+        "ipykernel",
+        "install",
+        "--name",
+        kernel_name,
+        "--user",
+    ]
+    logging.warning(f"calling {' '.join(install_command)}")
+    sp.check_call(install_command)
+
+
+def add_cdo_to_kernel_environment(kernel_name, cdo_path):
+    config = get_kernel_config(kernel_name)
+    logging.warning(f"changing config of kernel {kernel_name} from")
+    logging.warning(str(config))
+    add_cdo_to_config(config, cdo_path)
+    logging.warning("to:")
+    logging.warning(str(config))
+    logging.warning("in:")
+    logging.warning(get_config_path(kernel_name))
+    write_kernel_config(kernel_name, config)
+
+
+def add_cdo_to_config(config, cdo_path):
+    add_path_to_config(config, cdo_path)
+    config["CDO_ICON_GRIDS"] = "/pool/data/ICON"
+    config["CDI_CHUNK_CACHE"] = "1gb"
+
+
+def add_path_to_config(config, added_path):
+    env = config.get("env", {})
+    config["env"] = env
+    path = env.get("PATH", "$PATH") + f":{added_path}"
+    env["PATH"] = path
+
+
+def get_kernel_config(kernel_name):
+    config_path = get_config_path(kernel_name)
+    with open(config_path) as cf:
+        config = json.load(cf)
+    return config
+
+
+def write_kernel_config(kernel_name, config):
+    config_path = get_config_path(kernel_name)
+    with open(config_path, "w") as cf:
+        json.dump(config, cf, indent=4)
+
+
+def get_config_path(kernel_name):
+    home = os.environ["HOME"]
+    config_path = pathlib.Path(
+        home, f".local/share/jupyter/kernels/{kernel_name}/kernel.json"
+    )
+    return config_path
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser.description = """Install a jupyter kernel with cdo in the path"""
+    parser.add_argument("--cdo", default="/sw/spack-levante/cdo-2.3.0-mck3wy/bin/cdo")
+    parser.add_argument("--kernel_name", default="hamburg-hackathon")
+    args = parser.parse_args()
+    if args.cdo[-4:] == "/cdo":
+        args.cdo_dir = args.cdo[:-4]
+    else:
+        args.cdo_dir = args.cdo
+    return args
+
+
+def main(args):
+    install_kernel(args.kernel_name)
+    add_cdo_to_kernel_environment(args.kernel_name, args.cdo_dir)
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    main(args)
